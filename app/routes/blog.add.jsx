@@ -1,7 +1,9 @@
 import { Form, useSubmit } from '@remix-run/react';
 import { useState } from 'react';
+import Input from '../components/Input';
 import SelectInput from '../components/Select';
 import MultiSelect from '../components/MultiSelect';
+import customStyles from '../styles/custom.css?url';
 
 export default function AddBlogPage() {
   // const data = useActionData();
@@ -50,40 +52,38 @@ export default function AddBlogPage() {
                 <label htmlFor="title" className="mb-2 block text-xl">
                   Title
                 </label>
-                <input
+                <Input
                   type="text"
-                  name="title"
                   id="title"
                   value={formData.title}
                   onChange={handleChange}
-                  className="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50"
+                  className="form-input mt-1 block w-full rounded-md border-gray-300 hover:border-red-500 focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50"
                 />
               </div>
               <div className="form-group mb-4">
                 <label htmlFor="content" className="mb-2 block text-xl">
                   Content
                 </label>
-                <textarea
-                  name="content"
+                <Input
+                  textArea={true}
                   id="content"
                   cols="30"
                   rows="5"
                   value={formData.content}
                   onChange={handleChange}
-                  className="form-textarea mt-1 block w-full rounded-md border-gray-300 focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50"
-                ></textarea>
+                  className="form-textarea mt-1 block w-full rounded-md hover:border-red-500 border-gray-300 focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50"
+                />
               </div>
               <div className="form-group mb-4">
                 <label htmlFor="author" className="mb-2 block text-xl">
                   Author
                 </label>
-                <input
+                <Input
                   type="text"
-                  name="author"
                   id="author"
                   value={formData.author}
                   onChange={handleChange}
-                  className="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50"
+                  className="form-input mt-1 block w-full rounded-md hover:border-red-500 border-gray-300 focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50"
                 />
               </div>
               <div className="flex gap-x-4">
@@ -97,7 +97,7 @@ export default function AddBlogPage() {
                         { value: 'cate1', label: 'Cate 1' },
                         { value: 'cate2', label: 'Cate 2' },
                       ]}
-                      className="mt-1 block w-full rounded-md border-gray-300 focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50"
+                      className="w-full"
                       fieldName="category"
                       value={formData.category}
                       onChange={onChange}
@@ -122,40 +122,31 @@ export default function AddBlogPage() {
                   </div>
                 </div>
               </div>
-              <div className="flex gap-x-4">
-                <div className="w-1/2">
-                  <div className="from-group">
-                    <label htmlFor="metaTitle" className="mb-2 block text-xl">
-                      Meta Title
-                    </label>
-                    <input
-                      type="text"
-                      name="metaTitle"
-                      id="metaTitle"
-                      value={formData.metaTitle}
-                      onChange={handleChange}
-                      className="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50"
-                    />
-                  </div>
-                </div>
-                <div className="w-1/2">
-                  <div className="from-group">
-                    <label
-                      htmlFor="metaDescription"
-                      className="mb-2 block text-xl"
-                    >
-                      Meta Title
-                    </label>
-                    <input
-                      type="text"
-                      name="metaDescription"
-                      id="metaDescription"
-                      value={formData.metaDescription}
-                      onChange={handleChange}
-                      className="form-input mt-1 block w-full rounded-md border-gray-300 focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50"
-                    />
-                  </div>
-                </div>
+              <div className="from-group mb-4">
+                <label htmlFor="metaTitle" className="mb-2 block text-xl">
+                  Meta Title
+                </label>
+                <Input
+                  type="text"
+                  id="metaTitle"
+                  value={formData.metaTitle}
+                  onChange={handleChange}
+                  className="form-input mt-1 block w-full hover:border-red-500 rounded-md border-gray-300 focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50"
+                />
+              </div>
+              <div className="from-group mb-4">
+                <label htmlFor="metaDescription" className="mb-2 block text-xl">
+                  Meta Description
+                </label>
+                <Input
+                  textArea={true}
+                  id="metaDescription"
+                  cols="30"
+                  rows="3"
+                  value={formData.metaDescription}
+                  onChange={handleChange}
+                  className="form-textarea mt-1 block w-full rounded-md hover:border-red-500 border-gray-300 focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50"
+                />
               </div>
               <button
                 type="submit"
@@ -167,7 +158,7 @@ export default function AddBlogPage() {
           </div>
           <div className="w-1/2">
             <div className="w-full">
-              <img src="/blog_img.jpg" alt="blog" className="object-contain" />
+              <img src="/blog_img.png" alt="blog" className="object-contain" />
             </div>
           </div>
         </div>
@@ -175,6 +166,8 @@ export default function AddBlogPage() {
     </section>
   );
 }
+
+export const links = () => [{ rel: 'stylesheet', href: customStyles }];
 
 export const action = async ({ request }) => {
   const formData = await request.formData();

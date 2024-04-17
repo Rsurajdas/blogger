@@ -1,9 +1,13 @@
 import { Outlet } from '@remix-run/react';
+import MainHeader from '../components/MainHeader';
 
 export default function BlogPage() {
   return (
-    <main>
-      <Outlet />
-    </main>
+    <>
+      <MainHeader />
+      <main>
+        <Outlet />
+      </main>
+    </>
   );
 }

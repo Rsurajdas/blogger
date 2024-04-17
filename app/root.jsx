@@ -5,7 +5,6 @@ import {
   Scripts,
   ScrollRestoration,
 } from '@remix-run/react';
-import MainHeader from './components/MainHeader';
 import styles from './tailwind.css?url';
 
 export function Layout({ children }) {
@@ -18,7 +17,6 @@ export function Layout({ children }) {
         <Links />
       </head>
       <body className="font-body">
-        <MainHeader />
         {children}
         <ScrollRestoration />
         <Scripts />

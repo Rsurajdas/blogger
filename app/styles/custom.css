@@ -1,0 +1,30 @@
+:where(.css-dev-only-do-not-override-usln0u).ant-select-single.ant-select-lg,
+:where(.css-dev-only-do-not-override-usln0u).ant-select-multiple.ant-select-lg {
+  height: 42px;
+}
+
+:where(.css-dev-only-do-not-override-usln0u).ant-select-outlined:not(
+    .ant-select-disabled
+  ):not(.ant-select-customize-input):not(.ant-pagination-size-changer):hover
+  .ant-select-selector {
+  border-color: rgb(239, 68, 68) !important;
+}
+
+.ant-select-focused:where(
+    .css-dev-only-do-not-override-usln0u
+  ).ant-select-outlined:not(.ant-select-disabled):not(
+    .ant-select-customize-input
+  ):not(.ant-pagination-size-changer)
+  .ant-select-selector {
+  box-shadow: 0 0 0 0px #fff, 0 0 0 calc(3px + 0px) rgba(239, 68, 68, 0.5),
+    0 0 #0000, 0 0 #0000;
+}
+
+.ant-select-focused:where(
+    .css-dev-only-do-not-override-usln0u
+  ).ant-select-outlined:not(.ant-select-disabled):not(
+    .ant-select-customize-input
+  ):not(.ant-pagination-size-changer)
+  .ant-select-selector {
+  border-color: rgb(239, 68, 68) !important;
+}
