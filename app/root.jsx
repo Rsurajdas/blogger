@@ -6,6 +6,7 @@ import {
   ScrollRestoration,
 } from '@remix-run/react';
 import styles from './tailwind.css?url';
+import { getUserFromSession } from './utils/auth.server';
 
 export function Layout({ children }) {
   return (
@@ -38,3 +39,7 @@ export const links = () => [
   },
   { rel: 'stylesheet', href: styles },
 ];
+
+export const loader = ({ request }) => {
+  return getUserFromSession(request);
+};

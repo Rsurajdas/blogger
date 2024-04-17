@@ -1,4 +1,8 @@
+import { useLoaderData } from '@remix-run/react';
+
 export default function MainHeader() {
+  // eslint-disable-next-line no-unused-vars
+  const userId = useLoaderData();
   return (
     <header className="bg-slate-50 h-16">
       <div className="xl:container h-full">

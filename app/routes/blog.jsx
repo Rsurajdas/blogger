@@ -1,5 +1,6 @@
 import { Outlet } from '@remix-run/react';
 import MainHeader from '../components/MainHeader';
+import { getUserFromSession } from '../utils/auth.server';
 
 export default function BlogPage() {
   return (
@@ -11,3 +12,7 @@ export default function BlogPage() {
     </>
   );
 }
+
+export const loader = ({ request }) => {
+  return getUserFromSession(request);
+};

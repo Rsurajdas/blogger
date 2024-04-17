@@ -1,7 +1,7 @@
 export const meta = () => {
   return [
-    { title: 'New Remix App' },
-    { name: 'description', content: 'Welcome to Remix!' },
+    { title: 'Blogger' },
+    { name: 'description', content: 'Welcome to Blogger!' },
   ];
 };
 

@@ -1,16 +1,24 @@
-import { Form, useSubmit } from '@remix-run/react';
+import {
+  Form,
+  useSubmit,
+  redirect,
+  json,
+  useLoaderData,
+} from '@remix-run/react';
 import { useState } from 'react';
 import Input from '../components/Input';
 import SelectInput from '../components/Select';
 import MultiSelect from '../components/MultiSelect';
 import customStyles from '../styles/custom.css?url';
+import { requireUserSession } from '../utils/auth.server';
+import { createBlog } from '../utils/blog.server';
+import { getCategories } from '../utils/category.server';
 
 export default function AddBlogPage() {
-  // const data = useActionData();
+  const data = useLoaderData();
   const [formData, setFormData] = useState({
     title: '',
     content: '',
-    author: '',
     category: '',
     tags: [],
     metaTitle: '',
@@ -38,7 +46,6 @@ export default function AddBlogPage() {
   }
   return (
     <section className="py-12">
-      {/* {console.log(data)} */}
       <div className="xl:container">
         <div className="w-full pb-8">
           <h1 className="text-5xl border-b text-red-500 border-dashed pb-4">
@@ -74,18 +81,6 @@ export default function AddBlogPage() {
                   className="form-textarea mt-1 block w-full rounded-md hover:border-red-500 border-gray-300 focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50"
                 />
               </div>
-              <div className="form-group mb-4">
-                <label htmlFor="author" className="mb-2 block text-xl">
-                  Author
-                </label>
-                <Input
-                  type="text"
-                  id="author"
-                  value={formData.author}
-                  onChange={handleChange}
-                  className="form-input mt-1 block w-full rounded-md hover:border-red-500 border-gray-300 focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50"
-                />
-              </div>
               <div className="flex gap-x-4">
                 <div className="w-1/2">
                   <div className="form-group mb-4">
@@ -93,10 +88,10 @@ export default function AddBlogPage() {
                       Category
                     </label>
                     <SelectInput
-                      options={[
-                        { value: 'cate1', label: 'Cate 1' },
-                        { value: 'cate2', label: 'Cate 2' },
-                      ]}
+                      options={data?.categories.map((item) => ({
+                        value: item.id,
+                        label: item.title,
+                      }))}
                       className="w-full"
                       fieldName="category"
                       value={formData.category}
@@ -170,8 +165,13 @@ export default function AddBlogPage() {
 export const links = () => [{ rel: 'stylesheet', href: customStyles }];
 
 export const action = async ({ request }) => {
+  const userId = await requireUserSession(request);
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  console.log(data);
-  return null;
+  await createBlog(data, userId);
+  return redirect('/');
+};
+
+export const loader = async () => {
+  return json({ categories: await getCategories() });
 };
