@@ -43,7 +43,7 @@ export const requireUserSession = async (request) => {
   const userId = await getUserFromSession(request);
 
   if (!userId) {
-    return redirect('/login');
+    throw redirect('/login');
   }
 
   return userId;

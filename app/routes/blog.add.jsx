@@ -1,18 +1,14 @@
-import {
-  Form,
-  useSubmit,
-  redirect,
-  json,
-  useLoaderData,
-} from '@remix-run/react';
+import { Form, useSubmit, json, useLoaderData } from '@remix-run/react';
+import { redirect } from '@remix-run/node';
 import { useState } from 'react';
 import Input from '../components/Input';
 import SelectInput from '../components/Select';
 import MultiSelect from '../components/MultiSelect';
 import customStyles from '../styles/custom.css?url';
-import { requireUserSession } from '../utils/auth.server';
+import { getUserFromSession } from '../utils/auth.server';
 import { createBlog } from '../utils/blog.server';
 import { getCategories } from '../utils/category.server';
+import { getTags } from '../utils/tag.server';
 
 export default function AddBlogPage() {
   const data = useLoaderData();
@@ -105,10 +101,10 @@ export default function AddBlogPage() {
                       Tags
                     </label>
                     <MultiSelect
-                      options={[
-                        { value: 'tag1', label: 'Tag 1' },
-                        { value: 'tag2', label: 'Tag 2' },
-                      ]}
+                      options={data?.tags.map((item) => ({
+                        value: item.id,
+                        label: item.title,
+                      }))}
                       className="w-full"
                       fieldName="tags"
                       value={formData.tags}
@@ -165,7 +161,7 @@ export default function AddBlogPage() {
 export const links = () => [{ rel: 'stylesheet', href: customStyles }];
 
 export const action = async ({ request }) => {
-  const userId = await requireUserSession(request);
+  const userId = await getUserFromSession(request);
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   await createBlog(data, userId);
@@ -173,5 +169,5 @@ export const action = async ({ request }) => {
 };
 
 export const loader = async () => {
-  return json({ categories: await getCategories() });
+  return json({ categories: await getCategories(), tags: await getTags() });
 };

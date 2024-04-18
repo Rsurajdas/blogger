@@ -7,13 +7,10 @@ export const createBlog = async (data, userId) => {
   try {
     await prisma.blog.create({
       data: {
-        title: data.title,
-        content: data.content,
-        category: data.category,
-        tags: tagsArr,
-        metaTitle: data.metaTitle,
-        metaDescription: data.metaDescription,
+        ...data,
         author: { connect: { id: userId } },
+        category: { connect: { id: data.category } },
+        tags: { connect: { id: tagsArr } },
         slug: slug,
       },
     });

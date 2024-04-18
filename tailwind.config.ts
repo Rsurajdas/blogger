@@ -5,6 +5,7 @@ export default {
   theme: {
     container: {
       center: true,
+      padding: '2.5rem',
     },
     fontFamily: {
       heading: ['DM Mono', 'monospace'],

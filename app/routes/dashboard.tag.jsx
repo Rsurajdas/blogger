@@ -6,11 +6,11 @@ import {
   useLoaderData,
 } from '@remix-run/react';
 import { redirect } from '@remix-run/node';
-import Input from '../components/Input';
-import { createCategory, getCategories } from '../utils/category.server';
 import { Table } from 'antd';
+import Input from '../components/Input';
+import { createTag, getTags } from '../utils/tag.server';
 
-export default function CategoryPage() {
+export default function TagPage() {
   const actionData = useActionData();
   const data = useLoaderData();
   const fetcher = useFetcher();
@@ -36,7 +36,6 @@ export default function CategoryPage() {
       ),
     },
   ];
-
   return (
     <>
       <section className="py-12">
@@ -45,7 +44,7 @@ export default function CategoryPage() {
             <div className="w-1/2">
               <Form method="post">
                 <h1 className="text-red-500 font-medium text-4xl font-heading border-b border-dashed border-red-400 pb-4">
-                  Category
+                  Tag
                 </h1>
                 <ul
                   className={`bg-red-100 rounded-lg border-red-500 border-dashed border mb-6 list-decimal transition-all mt-4  ${
@@ -58,7 +57,7 @@ export default function CategoryPage() {
                 </ul>
                 <div className="form-group mb-4">
                   <label htmlFor="title" className="mb-2 block text-xl">
-                    Category Name
+                    Tag Name
                   </label>
                   <Input
                     type="text"
@@ -78,8 +77,7 @@ export default function CategoryPage() {
               <Table
                 columns={columns}
                 dataSource={data}
-                className="mt-8"
-                bordered
+                className="border border-stone-300 rounded-md mt-8"
                 onRow={(record) => {
                   return {
                     onClick: () => handleDelete(record.id),
@@ -99,8 +97,8 @@ export const action = async ({ request }) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   try {
-    await createCategory(data);
-    return redirect('/dashboard/category');
+    await createTag(data);
+    return redirect('/dashboard/tag');
   } catch (error) {
     if (error.status === 405) {
       return { error: error.message };
@@ -109,5 +107,5 @@ export const action = async ({ request }) => {
 };
 
 export const loader = async () => {
-  return json(await getCategories());
+  return json(await getTags());
 };
