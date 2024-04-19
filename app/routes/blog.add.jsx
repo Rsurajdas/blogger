@@ -5,7 +5,7 @@ import Input from '../components/Input';
 import SelectInput from '../components/Select';
 import MultiSelect from '../components/MultiSelect';
 import customStyles from '../styles/custom.css?url';
-import { getUserFromSession } from '../utils/auth.server';
+import { requireUserSession } from '../utils/auth.server';
 import { createBlog } from '../utils/blog.server';
 import { getCategories } from '../utils/category.server';
 import { getTags } from '../utils/tag.server';
@@ -19,6 +19,7 @@ export default function AddBlogPage() {
     tags: [],
     metaTitle: '',
     metaDescription: '',
+    isPublished: false,
   });
   const submit = useSubmit();
   function handleChange(e) {
@@ -97,7 +98,7 @@ export default function AddBlogPage() {
                 </div>
                 <div className="w-1/2">
                   <div className="form-group mb-4">
-                    <label htmlFor="tags" className="mb-2 block text-xl">
+                    <label htmlFor="tag" className="mb-2 block text-xl">
                       Tags
                     </label>
                     <MultiSelect
@@ -139,9 +140,25 @@ export default function AddBlogPage() {
                   className="form-textarea mt-1 block w-full rounded-md hover:border-red-500 border-gray-300 focus:border-red-500 focus:ring focus:ring-red-500 focus:ring-opacity-50"
                 />
               </div>
+              <div className="w-1/2">
+                <div className="form-group mb-4">
+                  <label htmlFor="isPulished">Publish or Save</label>
+                  <SelectInput
+                    options={[
+                      { value: 'true', label: 'Publish' },
+                      { value: 'false', label: 'Save as draft' },
+                    ]}
+                    className="w-full"
+                    fieldName="isPublished"
+                    value={formData.isPublished}
+                    onChange={onChange}
+                    placeholder="Please select"
+                  />
+                </div>
+              </div>
               <button
                 type="submit"
-                className="bg-red-500 px-12 py-4 mt-8 rounded-md hover:bg-red-700 text-white font-bold"
+                className="bg-red-500 px-12 py-4 mt-4 rounded-md hover:bg-red-700 text-white font-bold"
               >
                 Submit
               </button>
@@ -161,11 +178,11 @@ export default function AddBlogPage() {
 export const links = () => [{ rel: 'stylesheet', href: customStyles }];
 
 export const action = async ({ request }) => {
-  const userId = await getUserFromSession(request);
+  const userId = await requireUserSession(request);
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
   await createBlog(data, userId);
-  return redirect('/');
+  return redirect('/blog');
 };
 
 export const loader = async () => {
